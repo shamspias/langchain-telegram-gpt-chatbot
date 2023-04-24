@@ -11,7 +11,8 @@ from celery import Celery
 import speech_recognition as sr
 
 from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import FAISS as BaseFAISS
+
+from faiss_utils import load_faiss_index
 
 load_dotenv()
 
@@ -30,17 +31,9 @@ embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
 # Store the last 10 conversations for each user
 conversations = {}
 
-
-class FAISS(BaseFAISS):
-
-    @staticmethod
-    def load(file_path):
-        with open(file_path, "rb") as f:
-            return pickle.load(f)
-
-
+# Load the FAISS index
 faiss_obj_path = "models/ycla.pickle"
-faiss_index = FAISS.load(faiss_obj_path)
+faiss_index = load_faiss_index(faiss_obj_path)
 
 
 @app.task
