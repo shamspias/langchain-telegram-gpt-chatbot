@@ -9,3 +9,4 @@ SpeechRecognition
 gTTS
 pydub
 langchain
+tiktoken
