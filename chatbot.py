@@ -31,17 +31,16 @@ embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
 conversations = {}
 
 
+def load_faiss_index(file_path):
+    with open(file_path, "rb") as f:
+        return pickle.load(f)
+
+
 @app.task
 def generate_response_chat(message_list):
-    class FAISS(BaseFAISS):
-        @staticmethod
-        def load(file_path):
-            with open(file_path, "rb") as f:
-                return pickle.load(f)
-
     # Load the FAISS index
     faiss_obj_path = "models/ycla.pickle"
-    faiss_index = FAISS.load(faiss_obj_path)
+    faiss_index = load_faiss_index(faiss_obj_path)
 
     if faiss_index:
         # Add extra text to the content of the last message
