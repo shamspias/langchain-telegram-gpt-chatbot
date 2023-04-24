@@ -205,4 +205,7 @@ def echo_message(message):
 
 
 if __name__ == "__main__":
+    print("Starting bot...")
+    print("Bot Started")
+    print("Press Ctrl + C to stop bot")
     bot.polling()
