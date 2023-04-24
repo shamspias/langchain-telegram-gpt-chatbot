@@ -1,5 +1,4 @@
 import os
-import pickle
 import openai
 import requests
 import telebot
