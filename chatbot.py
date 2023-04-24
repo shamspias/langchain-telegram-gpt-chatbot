@@ -31,18 +31,6 @@ embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
 conversations = {}
 
 
-class FAISS(BaseFAISS):
-    @staticmethod
-    def load(file_path):
-        with open(file_path, "rb") as f:
-            return pickle.load(f)
-
-
-# Load the FAISS index
-faiss_obj_path = "models/ycla.pickle"
-faiss_index = FAISS.load(faiss_obj_path)
-
-
 @app.task
 def generate_response_chat(message_list):
     if faiss_index:
@@ -205,6 +193,17 @@ def echo_message(message):
 
 
 if __name__ == "__main__":
+    class FAISS(BaseFAISS):
+        @staticmethod
+        def load(file_path):
+            with open(file_path, "rb") as f:
+                return pickle.load(f)
+
+
+    # Load the FAISS index
+    faiss_obj_path = "models/ycla.pickle"
+    faiss_index = FAISS.load(faiss_obj_path)
+
     print("Starting bot...")
     print("Bot Started")
     print("Press Ctrl + C to stop bot")
