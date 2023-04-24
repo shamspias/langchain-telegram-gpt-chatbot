@@ -58,7 +58,7 @@ def generate_response_chat(message_list):
                 updated_content += doc.page_content + "\n\n"
         except Exception as e:
             print(f"Error while fetching : {e}")
-            updated_content = last_message.content
+            updated_content = last_message["content"]
 
         # Create a new HumanMessage object with the updated content
         # updated_message = HumanMessage(content=updated_content)
