@@ -31,17 +31,20 @@ embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
 conversations = {}
 
 
-def load_faiss_index(file_path):
-    with open(file_path, "rb") as f:
-        return pickle.load(f)
+class FAISS(BaseFAISS):
+    @staticmethod
+    def load(file_path):
+        with open(file_path, "rb") as f:
+            return pickle.load(f)
 
 
-@app.task
+# Load the FAISS index
+faiss_obj_path = "models/ycla.pickle"
+faiss_index = FAISS.load(faiss_obj_path)
+
+
+# @app.task
 def generate_response_chat(message_list):
-    # Load the FAISS index
-    faiss_obj_path = "models/ycla.pickle"
-    faiss_index = load_faiss_index(faiss_obj_path)
-
     if faiss_index:
         # Add extra text to the content of the last message
         last_message = message_list[-1]
@@ -111,8 +114,9 @@ def conversation_tracking(text_message, user_id):
         "role": "user", "content": text_message
     })
     # Generate response
-    task = generate_response_chat.apply_async(args=[conversation_history])
-    response = task.get()
+    response = generate_response_chat(conversation_history)
+    # task = generate_response_chat.apply_async(args=[conversation_history])
+    # response = task.get()
 
     # Add the response to the user's responses
     user_responses.append(response)
