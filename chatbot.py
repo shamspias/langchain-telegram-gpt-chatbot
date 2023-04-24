@@ -32,7 +32,7 @@ conversations = {}
 
 
 @app.task
-def generate_response_chat(message_list):
+def generate_response_chat(message_list, faiss_index):
     if faiss_index:
         # Add extra text to the content of the last message
         last_message = message_list[-1]
@@ -70,7 +70,7 @@ def generate_response_chat(message_list):
     return assistant_response
 
 
-def conversation_tracking(text_message, user_id):
+def conversation_tracking(text_message, user_id, faiss_index):
     """
     Make remember all the conversation
     :param old_model: Open AI model
@@ -102,7 +102,7 @@ def conversation_tracking(text_message, user_id):
         "role": "user", "content": text_message
     })
     # Generate response
-    task = generate_response_chat.apply_async(args=[conversation_history])
+    task = generate_response_chat.apply_async(args=[conversation_history, faiss_index])
     response = task.get()
 
     # Add the response to the user's responses
@@ -148,7 +148,7 @@ def handle_voice(message):
         text = r.recognize_google(audio_data)
 
     # Generate response
-    replay_text = conversation_tracking(text, user_id)
+    replay_text = conversation_tracking(text, user_id, faiss_index)
 
     # Send the question text back to the user
     # Send the transcribed text back to the user
@@ -186,7 +186,7 @@ def echo_message(message):
         bot.reply_to(message, "Conversations and responses cleared!")
         return
 
-    response = conversation_tracking(message.text, user_id)
+    response = conversation_tracking(message.text, user_id, faiss_index)
 
     # Reply to message
     bot.reply_to(message, response)
