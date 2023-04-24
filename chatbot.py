@@ -13,7 +13,6 @@ import speech_recognition as sr
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS as BaseFAISS
 
-
 load_dotenv()
 
 SYSTEM_PROMPT = os.getenv('SYSTEM_PROMPT')
@@ -27,7 +26,6 @@ bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 OPENAI_API_KEY = os.getenv('OPEN_AI_KEY')
 
 embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
-
 
 # Store the last 10 conversations for each user
 conversations = {}
