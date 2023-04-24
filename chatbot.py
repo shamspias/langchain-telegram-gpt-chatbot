@@ -32,7 +32,17 @@ conversations = {}
 
 
 @app.task
-def generate_response_chat(message_list, faiss_index):
+def generate_response_chat(message_list):
+    class FAISS(BaseFAISS):
+        @staticmethod
+        def load(file_path):
+            with open(file_path, "rb") as f:
+                return pickle.load(f)
+
+    # Load the FAISS index
+    faiss_obj_path = "models/ycla.pickle"
+    faiss_index = FAISS.load(faiss_obj_path)
+
     if faiss_index:
         # Add extra text to the content of the last message
         last_message = message_list[-1]
@@ -70,7 +80,7 @@ def generate_response_chat(message_list, faiss_index):
     return assistant_response
 
 
-def conversation_tracking(text_message, user_id, faiss_index):
+def conversation_tracking(text_message, user_id):
     """
     Make remember all the conversation
     :param old_model: Open AI model
@@ -102,7 +112,7 @@ def conversation_tracking(text_message, user_id, faiss_index):
         "role": "user", "content": text_message
     })
     # Generate response
-    task = generate_response_chat.apply_async(args=[conversation_history, faiss_index])
+    task = generate_response_chat.apply_async(args=[conversation_history])
     response = task.get()
 
     # Add the response to the user's responses
@@ -148,7 +158,7 @@ def handle_voice(message):
         text = r.recognize_google(audio_data)
 
     # Generate response
-    replay_text = conversation_tracking(text, user_id, faiss_index)
+    replay_text = conversation_tracking(text, user_id)
 
     # Send the question text back to the user
     # Send the transcribed text back to the user
@@ -186,24 +196,13 @@ def echo_message(message):
         bot.reply_to(message, "Conversations and responses cleared!")
         return
 
-    response = conversation_tracking(message.text, user_id, faiss_index)
+    response = conversation_tracking(message.text, user_id)
 
     # Reply to message
     bot.reply_to(message, response)
 
 
 if __name__ == "__main__":
-    class FAISS(BaseFAISS):
-        @staticmethod
-        def load(file_path):
-            with open(file_path, "rb") as f:
-                return pickle.load(f)
-
-
-    # Load the FAISS index
-    faiss_obj_path = "models/ycla.pickle"
-    faiss_index = FAISS.load(faiss_obj_path)
-
     print("Starting bot...")
     print("Bot Started")
     print("Press Ctrl + C to stop bot")
