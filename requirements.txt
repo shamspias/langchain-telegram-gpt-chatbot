@@ -1,1 +1,10 @@
 faiss-cpu
+python-dotenv
+openai
+gunicorn
+celery
+redis
+pyTelegramBotAPI
+SpeechRecognition
+gTTS
+pydub
