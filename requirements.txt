@@ -8,3 +8,4 @@ pyTelegramBotAPI
 SpeechRecognition
 gTTS
 pydub
+langchain
