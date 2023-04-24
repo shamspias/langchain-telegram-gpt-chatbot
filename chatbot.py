@@ -71,6 +71,7 @@ def generate_response_chat(message_list):
     # Send request to GPT-3 (replace with actual GPT-3 API call)
     gpt3_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
+        temperature=0,
         messages=[
                      {"role": "system",
                       "content": SYSTEM_PROMPT},
