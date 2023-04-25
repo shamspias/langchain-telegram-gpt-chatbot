@@ -72,6 +72,9 @@ python chatbot.py
 
 7. Start chatting with your bot!
 
+## License
+This project is licensed under the MIT [License](). See the LICENSE file for details.
+
 ## Contributing
 Contributions are welcome! Please feel free to submit issues or pull requests to improve the chatbot's functionality, performance, or documentation.
 
