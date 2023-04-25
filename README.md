@@ -7,7 +7,7 @@ allowing users to find relevant information in a collection of documents.
 
 ## Demo
 
-![DeadlyAI](https://t.me/deadlyaibot)
+[DeadlyAI](https://t.me/deadlyaibot)
 
 ## Features
 
@@ -73,7 +73,7 @@ python chatbot.py
 7. Start chatting with your bot!
 
 ## License
-This project is licensed under the MIT [License](). See the LICENSE file for details.
+This project is licensed under the MIT [License](https://github.com/shamspias/langchain-telegram-gpt-chatbot/blob/main/LICENSE.txt). See the LICENSE file for details.
 
 ## Contributing
 Contributions are welcome! Please feel free to submit issues or pull requests to improve the chatbot's functionality, performance, or documentation.
