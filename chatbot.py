@@ -24,6 +24,7 @@ TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 
 OPENAI_API_KEY = os.getenv('OPEN_AI_KEY')
+MODEL_NAME = os.getenv('MODEL_NAME')
 
 embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
 
@@ -39,7 +40,7 @@ class FAISS(BaseFAISS):
 
 
 # Load the FAISS index
-faiss_obj_path = "models/ycla.pickle"
+faiss_obj_path = "models/" + MODEL_NAME + ".pickle"
 faiss_index = FAISS.load(faiss_obj_path)
 
 
@@ -59,6 +60,8 @@ def generate_response_chat(message_list):
         except Exception as e:
             print(f"Error while fetching : {e}")
             updated_content = last_message["content"]
+
+        print(updated_content)
 
         # Create a new HumanMessage object with the updated content
         # updated_message = HumanMessage(content=updated_content)
